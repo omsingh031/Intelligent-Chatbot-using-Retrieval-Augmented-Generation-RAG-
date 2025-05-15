@@ -94,6 +94,24 @@ st.markdown("""
             text-align:left;
             letter-spacing:1px;
         }
+        .history-box {
+            background-color:#35365a;
+            color:#fff;
+            border-radius:12px;
+            padding:12px 22px 10px 22px;
+            margin-top:24px;
+            margin-bottom:10px;
+            font-size:1.1rem;
+            font-weight:500;
+            text-align:left;
+            letter-spacing:0.5px;
+        }
+        .history-box .history-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            margin-top: 4px;
+        }
         .main-content {
             padding: 0 32px 24px 32px;
         }
@@ -109,7 +127,7 @@ st.markdown("""
         .stButton>button:hover { background-color: #5e78ff; }
         .chat-history {
             background-color: #2d2d44; border: 1px solid #444; border-radius: 8px;
-            padding: 15px; margin-top: 20px; max-height: 400px; overflow-y: auto;
+            padding: 15px; margin-top: 10px; max-height: 400px; overflow-y: auto;
         }
         [data-testid="stSidebar"] {
             background-color: #1e1e2e;
@@ -149,7 +167,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 selected_page = st_navbar(
-    ["Home", "About Us", "Team", "Contact Us", "Future Enhancements"]
+    ["Home", "How to Use", "About Us", "Team", "Contact Us", "Future Enhancements"]
 )
 
 # --- MAIN CONTENT ---
@@ -159,44 +177,11 @@ if selected_page == "Home":
     st.markdown("""
 ### 📌 **Welcome to the RAG Chatbot with Memory!**
 
-Harness the power of **AI + Retrieval** to get precise, document-specific answers-whether you're researching, studying, or building intelligent systems.
+Harness the power of **AI + Retrieval** to get precise, document-specific answers - whether you're researching, studying, or building intelligent systems.
 
 ---
-
-### 🔍 What This App Does
-
-This chatbot uses **Retrieval-Augmented Generation (RAG)** with conversational memory to answer your questions based on:
-
-- 📄 **Uploaded documents:** PDF, TXT  
-- 🌐 **Webpage URLs**
-
-It keeps track of your past questions to deliver context-aware, human-like responses.
-
----
-
-### 🚀 How to Use
-
-1. **Choose a Data Source:**  
-   • Upload a file using the File Uploader, **or**  
-   • Paste a webpage link in the URL box
-
-2. **Load the Content:**  
-   • Click **"Load File"** or **"Load URL"**  
-   • The app will chunk, embed, and store the content for quick access
-
-3. **Ask Questions:**  
-   • Type your query in the chat input below  
-   • Get relevant, grounded answers-instantly!
-
-4. **Explore More:**  
-   • Use the navigation bar to learn about the app, the team, and future updates
-
----
-
-_Ready to get started? Load your content and ask away!_
     """)
-    st.markdown("</div>", unsafe_allow_html=True)
-
+    # Chat interface and sidebar
     with st.sidebar:
         st.header("Data Source")
         source_option = st.radio("Select a source:", ("Web URL", "Upload File"))
@@ -220,6 +205,9 @@ _Ready to get started? Load your content and ask away!_
                 <div class='contact-item'><span class='contact-icon'>🔗</span><a class='contact-link' href='https://linkedin.com/in/omsingh031' target='_blank'>LinkedIn</a></div>
             </div>
         """, unsafe_allow_html=True)
+
+    session_id = "default_session"
+    chat_history = st.session_state["store"].get(session_id, ChatMessageHistory()).messages if "store" in st.session_state else []
 
     try:
         vectorstore = st.session_state.get('vectorstore') or Chroma(persist_directory=CHROMA_DB_DIR, embedding_function=gemini_embeddings)
@@ -283,7 +271,6 @@ _Ready to get started? Load your content and ask away!_
             st.warning("Please load a document or URL first.")
         else:
             try:
-                session_id = "default_session"
                 conversational_rag_chain = RunnableWithMessageHistory(
                     st.session_state["rag_chain"],
                     get_session_history,
@@ -297,13 +284,60 @@ _Ready to get started? Load your content and ask away!_
                 )
                 answer = response["answer"]
                 st.write("Answer:", answer)
-                st.markdown("<div class='chat-history'>", unsafe_allow_html=True)
-                for msg in st.session_state["store"].get(session_id, ChatMessageHistory()).messages:
-                    prefix = "AI" if isinstance(msg, AIMessage) else "User"
-                    st.write(f"{prefix}: {msg.content}")
-                st.markdown("</div>", unsafe_allow_html=True)
+                chat_history = st.session_state["store"].get(session_id, ChatMessageHistory()).messages
             except Exception as e:
                 st.error(f"Error generating response: {e}")
+
+    # Only show the history box if there is chat history
+    if chat_history:
+        st.markdown("""
+            <div class='history-box'>
+                <div class='history-title'>History</div>
+        """, unsafe_allow_html=True)
+        for msg in chat_history:
+            prefix = "AI" if isinstance(msg, AIMessage) else "User"
+            st.write(f"**{prefix}:** {msg.content}")
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    st.markdown("</div>", unsafe_allow_html=True)  # End main-content
+
+elif selected_page == "How to Use":
+    st.markdown("<div class='heading-box'>How to Use</div>", unsafe_allow_html=True)
+    st.markdown("<div class='main-content'>", unsafe_allow_html=True)
+    st.markdown("""
+### 🔍 What This App Does
+
+This chatbot uses **Retrieval-Augmented Generation (RAG)** with conversational memory to answer your questions based on:
+
+- 📄 **Uploaded documents:** PDF, TXT  
+- 🌐 **Webpage URLs**
+
+It keeps track of your past questions to deliver context-aware, human-like responses.
+
+---
+
+### 🚀 How to Use
+
+1. **Choose a Data Source:**  
+   • Upload a file using the File Uploader, **or**  
+   • Paste a webpage link in the URL box
+
+2. **Load the Content:**  
+   • Click **"Load File"** or **"Load URL"**  
+   • The app will chunk, embed, and store the content for quick access
+
+3. **Ask Questions:**  
+   • Type your query in the chat input below  
+   • Get relevant, grounded answers-instantly!
+
+4. **Explore More:**  
+   • Use the navigation bar to learn about the app, the team, and future updates
+
+---
+
+_Ready to get started? Load your content and ask away!_
+    """)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 elif selected_page == "About Us":
     st.markdown("<div class='heading-box'>About Us</div>", unsafe_allow_html=True)
