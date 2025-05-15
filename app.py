@@ -22,7 +22,6 @@ warnings.filterwarnings('ignore')
 load_dotenv()
 
 # API environment
-os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
 os.environ["LANGCHAIN_TRACING_V2"] = os.getenv("LANGCHAIN_TRACING_V2")
 os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
 os.environ["LANGCHAIN_ENDPOINT"] = os.getenv("LANGCHAIN_ENDPOINT")
@@ -49,7 +48,7 @@ def get_session_history(session_id: str) -> BaseChatMessageHistory:
         st.session_state["store"][session_id] = ChatMessageHistory()
     return st.session_state["store"][session_id]
 
-# UI setup
+# --- UI CSS and Config ---
 st.set_page_config(page_title="RAG with Conversational Memory", layout="wide")
 st.markdown("""
     <style>
@@ -77,23 +76,77 @@ st.markdown("""
         .contact-icon { margin-right: 8px; }
         a.contact-link { color: #a8cdf0; text-decoration: none; }
         a.contact-link:hover { text-decoration: underline; }
+        /* Navbar styling */
+        .navbar-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 36px;
+            margin-bottom: 24px;
+            margin-top: 8px;
+        }
+        .navbar-btn {
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 28px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .navbar-btn.selected, .navbar-btn:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        /* Sticky footer */
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100vw;
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0 8px 0;
+            z-index: 100;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+        /* Prevent footer overlap */
+        .stApp {
+            padding-bottom: 48px !important;
+        }
     </style>
 """, unsafe_allow_html=True)
 
+# --- NAVBAR ---
 nav_options = ["Home", "About Us", "Team", "Contact Us", "Future Enhancements"]
 if "nav_selection" not in st.session_state:
     st.session_state["nav_selection"] = "Home"
 
-cols = st.columns(len(nav_options))
-for i, option in enumerate(nav_options):
-    if cols[i].button(option):
+st.markdown("<div class='navbar-row'>", unsafe_allow_html=True)
+for option in nav_options:
+    selected = "selected" if st.session_state["nav_selection"] == option else ""
+    if st.button(f"{option}", key=f"navbar_{option}"):
         st.session_state["nav_selection"] = option
+    st.markdown(
+        f"""<style>
+        [data-testid="stButton"][key="navbar_{option}"] button {{
+            {'background-color: #007bff; color: #fff;' if selected else ''}
+            border-radius: 8px !important;
+            min-width: 140px;
+            margin: 0 6px;
+        }}
+        </style>""", unsafe_allow_html=True
+    )
+st.markdown("</div>", unsafe_allow_html=True)
 
 selected_page = st.session_state["nav_selection"]
 
 with st.container():
     st.markdown("<div class='main'>", unsafe_allow_html=True)
-
     if selected_page == "Home":
         st.title("RAG with Conversational Memory")
         st.markdown("""
@@ -114,7 +167,6 @@ with st.container():
             elif source_option == "Upload File":
                 uploaded_file = st.file_uploader("Upload a text file or PDF:", type=["txt", "pdf"])
                 load_file_button = st.button("Load File")
-
             st.markdown("""
                 <div class='contact-box'>
                     <div class='contact-title'>Contact Us</div>
@@ -171,7 +223,6 @@ with st.container():
                     ("human", "{input}"),
                 ])
                 history_aware_retriever = create_history_aware_retriever(model, retriever, contextualize_q_prompt)
-
                 qa_prompt = ChatPromptTemplate.from_messages([
                     ("system", system_prompt),
                     MessagesPlaceholder("chat_history"),
@@ -217,7 +268,7 @@ with st.container():
 
     elif selected_page == "Team":
         st.header("Meet the Team")
-        st.markdown("- Om Kumar Singh — Lead Developer\n- Other teammates...")
+        st.markdown("- Om Kumar Singh - Lead Developer\n- Other teammates...")
 
     elif selected_page == "Contact Us":
         st.header("Contact Us")
@@ -240,10 +291,10 @@ with st.container():
 
     st.markdown("</div>", unsafe_allow_html=True)
     st.markdown("---")
-  
-# Footer
+
+# --- Sticky Footer ---
 st.markdown("""
 <div class='footer'>
-    © 2025 Om Kumar Singh — All rights reserved.
+    © 2025 Om Kumar Singh - All rights reserved.
 </div>
 """, unsafe_allow_html=True)
