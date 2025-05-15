@@ -134,12 +134,12 @@ st.markdown("""
             border-right: 1px solid #383850;
         }
         .contact-box {
-            background-color: #f0f4ff;
+            background-color: #ccccc6  ;
             padding: 15px;
             border-radius: 10px;
             margin-top: 20px;
             margin-bottom: 10px;
-            color: #23243a;
+            color: #040760 ;
         }
         .contact-title {
             font-size: 20px; font-weight: bold; color: #1a73e8; margin-bottom: 10px;
@@ -155,7 +155,7 @@ st.markdown("""
             width: 100%;
             background-color: #1e1e2e;
             border-top: 1px solid #383850;
-            color: #aaa;
+            color:#FFC300 ;
             text-align: center;
             padding: 10px 0;
             z-index: 100;
@@ -172,12 +172,12 @@ selected_page = st_navbar(
 
 # --- MAIN CONTENT ---
 if selected_page == "Home":
-    st.markdown("<div class='heading-box'>RAG with Conversational Memory</div>", unsafe_allow_html=True)
+    st.markdown("<div class='heading-box'>Intelligent Chatbot using Retrieval Augmented Generation(RAG)</div>", unsafe_allow_html=True)
     st.markdown("<div class='main-content'>", unsafe_allow_html=True)
     st.markdown("""
 ### 📌 **Welcome to the RAG Chatbot with Memory!**
 
-Harness the power of **AI + Retrieval** to get precise, document-specific answers - whether you're researching, studying, or building intelligent systems.
+Harness the power of ****AI + Retrieval**** to get precise, document-specific answers - whether you're researching, studying, or building intelligent systems.
 
 ---
     """)
@@ -305,9 +305,15 @@ elif selected_page == "How to Use":
     st.markdown("<div class='heading-box'>How to Use</div>", unsafe_allow_html=True)
     st.markdown("<div class='main-content'>", unsafe_allow_html=True)
     st.markdown("""
+### 📌 **Welcome to the RAG Chatbot with Memory!**
+
+Harness the power of ****AI + Retrieval**** to get precise, document-specific answers - whether you're researching, studying, or building intelligent systems.
+
+---
+                                
 ### 🔍 What This App Does
 
-This chatbot uses **Retrieval-Augmented Generation (RAG)** with conversational memory to answer your questions based on:
+This chatbot uses ****Retrieval-Augmented Generation (RAG)**** with conversational memory to answer your questions based on:
 
 - 📄 **Uploaded documents:** PDF, TXT  
 - 🌐 **Webpage URLs**
@@ -335,7 +341,7 @@ It keeps track of your past questions to deliver context-aware, human-like respo
 
 ---
 
-_Ready to get started? Load your content and ask away!_
+## _Ready to get started? Load your content and ask away!_
     """)
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -376,7 +382,7 @@ Whether you're:
 - A professional exploring research papers  
 - Or a curious mind with big questions...
 
-**This app is for you.**
+## **This app is for you.**
     """)
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -384,7 +390,8 @@ elif selected_page == "Team":
     st.markdown("<div class='heading-box'>Meet the Team</div>", unsafe_allow_html=True)
     st.markdown("<div class='main-content'>", unsafe_allow_html=True)
     st.markdown("""
-- 👨‍💻 **Om Kumar Singh** – Lead Developer  
+                
+- 👨‍💻 ****Om Kumar Singh**** – Lead Developer  
 - 🧑‍💻 Ashi Jain  
 - 🧑‍💻 Vansh Jain  
 - 🧑‍💻 Roshmik Agrawal  
