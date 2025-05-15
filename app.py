@@ -116,7 +116,7 @@ st.markdown("""
             border-right: 1px solid #383850;
         }
         .contact-box {
-            background-color: #f0f4ff;
+            background-color: #C0C0C0;
             padding: 15px;
             border-radius: 10px;
             margin-top: 20px;
@@ -154,7 +154,7 @@ selected_page = st_navbar(
 
 # --- MAIN CONTENT ---
 if selected_page == "Home":
-    st.markdown("<div class='heading-box'>RAG with Conversational Memory</div>", unsafe_allow_html=True)
+    st.markdown("<div class='heading-box'>Intelligent chatbot using Retrieval Augmented Generation(RAG)</div>", unsafe_allow_html=True)
     st.markdown("<div class='main-content'>", unsafe_allow_html=True)
     st.write(
         "Use the sidebar to upload files or enter a URL to scrape documents. "
