@@ -116,7 +116,7 @@ st.markdown("""
             border-right: 1px solid #383850;
         }
         .contact-box {
-            background-color: #C0C0C0;
+            background-color: #f0f4ff;
             padding: 15px;
             border-radius: 10px;
             margin-top: 20px;
@@ -154,12 +154,48 @@ selected_page = st_navbar(
 
 # --- MAIN CONTENT ---
 if selected_page == "Home":
-    st.markdown("<div class='heading-box'>Intelligent chatbot using Retrieval Augmented Generation(RAG)</div>", unsafe_allow_html=True)
+    st.markdown("<div class='heading-box'>RAG with Conversational Memory</div>", unsafe_allow_html=True)
     st.markdown("<div class='main-content'>", unsafe_allow_html=True)
-    st.write(
-        "Use the sidebar to upload files or enter a URL to scrape documents. "
-        "Then, ask questions based on the uploaded content. The app remembers previous queries!"
-    )
+    st.markdown("""
+### 📌 **Welcome to the RAG Chatbot with Memory!**
+
+Harness the power of **AI + Retrieval** to get precise, document-specific answers-whether you're researching, studying, or building intelligent systems.
+
+---
+
+### 🔍 What This App Does
+
+This chatbot uses **Retrieval-Augmented Generation (RAG)** with conversational memory to answer your questions based on:
+
+- 📄 **Uploaded documents:** PDF, TXT  
+- 🌐 **Webpage URLs**
+
+It keeps track of your past questions to deliver context-aware, human-like responses.
+
+---
+
+### 🚀 How to Use
+
+1. **Choose a Data Source:**  
+   • Upload a file using the File Uploader, **or**  
+   • Paste a webpage link in the URL box
+
+2. **Load the Content:**  
+   • Click **"Load File"** or **"Load URL"**  
+   • The app will chunk, embed, and store the content for quick access
+
+3. **Ask Questions:**  
+   • Type your query in the chat input below  
+   • Get relevant, grounded answers-instantly!
+
+4. **Explore More:**  
+   • Use the navigation bar to learn about the app, the team, and future updates
+
+---
+
+_Ready to get started? Load your content and ask away!_
+    """)
+    st.markdown("</div>", unsafe_allow_html=True)
 
     with st.sidebar:
         st.header("Data Source")
@@ -190,7 +226,6 @@ if selected_page == "Home":
         st.session_state['vectorstore'] = vectorstore
     except Exception as e:
         st.error(f"Error initializing or loading Chroma DB: {e}")
-        st.markdown("</div>", unsafe_allow_html=True)
         st.stop()
 
     if (source_option == "Web URL" and url and load_url_button) or (
@@ -216,7 +251,6 @@ if selected_page == "Home":
             splits = text_splitter.split_documents(doc)
             if not splits:
                 st.error("No content extracted. Check your input.")
-                st.markdown("</div>", unsafe_allow_html=True)
                 st.stop()
 
             st.session_state['vectorstore'].add_documents(documents=splits)
@@ -270,29 +304,70 @@ if selected_page == "Home":
                 st.markdown("</div>", unsafe_allow_html=True)
             except Exception as e:
                 st.error(f"Error generating response: {e}")
-    st.markdown("</div>", unsafe_allow_html=True)  # End main-content
 
 elif selected_page == "About Us":
     st.markdown("<div class='heading-box'>About Us</div>", unsafe_allow_html=True)
     st.markdown("<div class='main-content'>", unsafe_allow_html=True)
-    st.write("We are a team building AI chatbots powered by Retrieval-Augmented Generation with memory.")
+    st.markdown("""
+Welcome to our RAG Chatbot - an intelligent assistant that bridges human curiosity and machine knowledge through cutting-edge AI.
+
+We are a passionate team of developers, designers, and researchers dedicated to making information retrieval smarter, faster, and more contextual. This project was born out of the need for a tool that can intelligently search and explain content from documents and the web - while remembering the flow of conversation, just like a human would.
+
+---
+
+### 🎯 Our Mission
+
+To make AI more human-centric by combining advanced language models with intuitive user interfaces and real-world usability.
+
+We aim to simplify how people interact with information by embedding AI in everyday research, education, and documentation workflows.
+
+---
+
+### 💼 What We Do
+
+- Build LLM-powered apps with real-world utility  
+- Craft sleek and simple UI experiences using Streamlit  
+- Apply retrieval techniques like vector search with LangChain and Chroma  
+- Continuously explore the boundaries of AI, UX, and automation
+
+---
+
+### 🌍 Why This Matters
+
+In a world overflowing with unstructured information, our chatbot serves as a personal researcher, quickly digging through content and providing meaningful answers - with memory, clarity, and reliability.
+
+Whether you're:
+
+- A student studying from PDFs  
+- A professional exploring research papers  
+- Or a curious mind with big questions...
+
+**This app is for you.**
+    """)
     st.markdown("</div>", unsafe_allow_html=True)
 
 elif selected_page == "Team":
     st.markdown("<div class='heading-box'>Meet the Team</div>", unsafe_allow_html=True)
     st.markdown("<div class='main-content'>", unsafe_allow_html=True)
-    st.write("- Om Kumar Singh - Lead Developer\n- Other teammates...")
+    st.markdown("""
+- 👨‍💻 **Om Kumar Singh** – Lead Developer  
+- 🧑‍💻 Ashi Jain  
+- 🧑‍💻 Vansh Jain  
+- 🧑‍💻 Roshmik Agrawal  
+- 🧑‍💻 Aadish Chaturvedi  
+- 🧑‍💻 Shambhavi Dubey
+    """)
     st.markdown("</div>", unsafe_allow_html=True)
 
 elif selected_page == "Contact Us":
     st.markdown("<div class='heading-box'>Contact Us</div>", unsafe_allow_html=True)
     st.markdown("<div class='main-content'>", unsafe_allow_html=True)
     st.markdown("""
-    📞 Phone: +91-7004918026  
-    ✉️ Email: as120171.omkumar@gmail.com  
-    📷 Instagram: [@omsingh031](https://www.instagram.com/omsingh031/)  
-    💻 GitHub: [omsingh031](https://github.com/omsingh031)  
-    🔗 LinkedIn: [omsingh031](https://linkedin.com/in/omsingh031)
+📞 Phone: +91-7004918026  
+✉️ Email: as120171.omkumar@gmail.com  
+📷 Instagram: [@omsingh031](https://www.instagram.com/omsingh031/)  
+💻 GitHub: [omsingh031](https://github.com/omsingh031)  
+🔗 LinkedIn: [omsingh031](https://linkedin.com/in/omsingh031)
     """)
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -300,10 +375,10 @@ elif selected_page == "Future Enhancements":
     st.markdown("<div class='heading-box'>Future Enhancements</div>", unsafe_allow_html=True)
     st.markdown("<div class='main-content'>", unsafe_allow_html=True)
     st.markdown("""
-    - Add support for more file types
-    - Improve long-term context handling
-    - Integrate authentication and user profiles
-    - Export chat logs and document references
+- Add support for more file types  
+- Improve long-term context handling  
+- Integrate authentication and user profiles  
+- Export chat logs and document references
     """)
     st.markdown("</div>", unsafe_allow_html=True)
 
