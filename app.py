@@ -1,4 +1,4 @@
-from dotenv import load_dotenv
+from dotenv import load_dotenv 
 import os
 import streamlit as st
 import warnings
@@ -16,14 +16,12 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.prompts import MessagesPlaceholder
 from langchain.chains import create_history_aware_retriever
-from langchain.chains import create_retrieval_chain
-from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.messages import HumanMessage, AIMessage
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 import tempfile
-import requests  # Import the requests library
+import requests
 
 load_dotenv()
 
@@ -33,37 +31,28 @@ os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
 os.environ["LANGCHAIN_ENDPOINT"] = os.getenv("LANGCHAIN_ENDPOINT")
 os.environ["LANGCHAIN_PROJECT"] = os.getenv("LANGCHAIN_PROJECT")
 
-# Initialize session state
 if "chat_history" not in st.session_state:
     st.session_state["chat_history"] = []
 
 if "store" not in st.session_state:
     st.session_state["store"] = {}
 
-# Define Chroma DB directory
 CHROMA_DB_DIR = "chroma_db"
 
-# Initialize Gemini models
 try:
     gemini_embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-    model = ChatGoogleGenerativeAI(model="gemini-1.5-flash-latest",
-                                   convert_system_message_to_human=True)
+    model = ChatGoogleGenerativeAI(model="gemini-1.5-flash-latest", convert_system_message_to_human=True)
 except Exception as e:
     st.error(f"Error initializing Gemini models: {e}")
     st.stop()
 
-
-# Implement session handling
 def get_session_history(session_id: str) -> BaseChatMessageHistory:
     if session_id not in st.session_state["store"]:
         st.session_state["store"][session_id] = ChatMessageHistory()
     return st.session_state["store"][session_id]
 
-
-# Streamlit UI
 st.set_page_config(page_title="RAG with Conversational Memory", layout="wide")
 
-# Custom CSS for styling
 st.markdown(
     """
     <style>
@@ -91,10 +80,6 @@ st.markdown(
         .stButton>button:hover {
             background-color: #0056b3;
         }
-        .team-member {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
         .chat-history {
             background-color: #ffffff;
             border: 1px solid #ced4da;
@@ -102,22 +87,49 @@ st.markdown(
             padding: 10px;
             margin-top: 20px;
         }
-        .team-box {
-            background-color: #ADD8E6; /* Light blue */
-            padding: 10px;
-            border-radius: 8px;
+      .contact-box {
+            background-color: #2f3b45;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            margin-bottom: 10px;
         }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-# Main content area
 with st.container():
     st.markdown("<div class='main'>", unsafe_allow_html=True)
     st.title("RAG with Conversational Memory")
 
-    # Sidebar for source selection
+    st.markdown("""
+    ### 🤖 About This App
+
+    This chatbot uses **RAG (Retrieval-Augmented Generation)** with **Google Gemini** models to provide intelligent, context-aware answers based on your uploaded file or web page content. It also remembers previous questions using **conversational memory**.
+
+    ---
+
+    ### 🧬 How to Use
+
+    1. **Choose your data source** from the sidebar:
+        - 📄 Upload a `.txt` or `.pdf` file
+        - 🌐 Enter a valid **URL** of a webpage to scrape
+
+    2. Click **"Load URL"** or **"Load File"** to ingest the content.
+
+    3. Once the data is loaded, enter a question in the input box and click **"Ask Question"**.
+
+    4. The chatbot will respond using the relevant information from your data.
+
+    5. You can see your **chat history** below the answer.
+
+    ---
+
+    ⚠️ *Note: If you ask a question before loading a data source, the bot won’t have context to respond properly.*
+
+    """, unsafe_allow_html=True)
+
     with st.sidebar:
         st.markdown("<div class='sidebar sidebar-content'>", unsafe_allow_html=True)
         st.header("Data Source")
@@ -135,19 +147,32 @@ with st.container():
             load_url_button = False
             load_file_button = False
 
-        # Display team members in a light blue box
-        st.markdown("<div class='team-box'>", unsafe_allow_html=True)
-        st.markdown("### Team Members: Group 31")
-        st.markdown("<div class='team-member'>1. Om Kumar Singh - 23BAI10076</div>", unsafe_allow_html=True)
-        st.markdown("<div class='team-member'>2. Roshmik Agrawal - 23BAI10014</div>", unsafe_allow_html=True)
-        st.markdown("<div class='team-member'>3. Shambhavi Dubey - 23BAI10405</div>", unsafe_allow_html=True)
-        st.markdown("<div class='team-member'>4. Vansh Jain - 23BAI10078</div>", unsafe_allow_html=True)
-        st.markdown("<div class='team-member'>5. Ashi Jain - 23BAI10311</div>", unsafe_allow_html=True)
-        st.markdown("<div class='team-member'>6. Aadish Chaturvedi - 23BAI11367</div>", unsafe_allow_html=True)
+        st.markdown("""
+        <div class='contact-box'>
+            <div class='contact-title' >Contact Us</div>
+            <div class='contact-item'>
+                <span class='contact-icon'>📞</span>
+                <a class='contact-link' href='tel:7004918026'>+91-7004918026</a>
+            </div>
+            <div class='contact-item'>
+                <span class='contact-icon'>✉️</span>
+                <a class='contact-link' href='mailto:as120171.omkumar@gmail.com'>as120171.omkumar@gmail.com</a>
+            </div>
+            <div class='contact-item'>
+                <span class='contact-icon'>📷</span>
+                <a class='contact-link' href='https://www.instagram.com/omsingh031/' target='_blank'>Instagram</a>
+            </div>
+            <div class='contact-item'>
+                <span class='contact-icon'>💻</span>
+                <a class='contact-link' href='https://github.com/omsingh031' target='_blank'>GitHub</a>
+            </div>
+            <div class='contact-item'>
+                <span class='contact-icon'>🔗</span>
+                <a class='contact-link' href='https://linkedin.com/in/omsingh031' target='_blank'>LinkedIn</a>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    # Load existing vectorstore or create a new one
     try:
         if 'vectorstore' in st.session_state:
             vectorstore = st.session_state['vectorstore']
@@ -160,60 +185,42 @@ with st.container():
         st.error(f"Error initializing or loading Chroma DB: {e}")
         st.stop()
 
-    # Rest of your code related to processing data and asking questions
     if (source_option == "Web URL" and url and load_url_button) or (
             source_option == "Upload File" and uploaded_file and load_file_button):
 
         try:
             if source_option == "Web URL":
-                try:  # Handle potential connection errors
-                    loader = WebBaseLoader(web_paths=(url,))  # REMOVED bs_kwargs
-                    doc = loader.load()
+                loader = WebBaseLoader(web_paths=(url,))
+                doc = loader.load()
+                text_content = "".join([element.page_content + "\n" for element in doc])
 
-                    # Extract text content
-                    text_content = ""
-                    for element in doc:
-                        text_content += element.page_content + "\n"
+                class DummyDocument:
+                    def __init__(self, page_content, metadata=None):
+                        self.page_content = page_content
+                        self.metadata = metadata if metadata is not None else {}
 
-                    # Create a dummy document object
-                    class DummyDocument:
-                        def __init__(self, page_content, metadata=None):
-                            self.page_content = page_content
-                            self.metadata = metadata if metadata is not None else {}  # Add metadata attribute
-
-                    doc = [DummyDocument(text_content, metadata={"source": url})]  # Wrap in a list, add source URL
-
-                except requests.exceptions.RequestException as e:
-                    st.error(f"Error connecting to URL: {e}")
-                    st.stop()
+                doc = [DummyDocument(text_content, metadata={"source": url})]
 
             elif source_option == "Upload File":
-                # Save the uploaded file to a temporary file
                 with tempfile.NamedTemporaryFile(delete=False,
                                                   suffix=f".{uploaded_file.name.split('.')[-1]}") as temp_file:
                     temp_file.write(uploaded_file.read())
                     temp_file_path = temp_file.name
 
                 file_type = uploaded_file.type
-                if "text" in file_type:
-                    loader = TextLoader(temp_file_path)
-                elif "pdf" in file_type:
-                    loader = PyPDFLoader(temp_file_path)  # Load PDF
+                loader = TextLoader(temp_file_path) if "text" in file_type else PyPDFLoader(temp_file_path)
                 doc = loader.load()
 
             text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
             splits = text_splitter.split_documents(doc)
 
-            # Check if splits is empty
             if not splits:
-                st.error(
-                    "No content was extracted from the URL or file. Please check the URL/file and the settings.")
+                st.error("No content was extracted. Check your input.")
                 st.stop()
 
-            # Add documents to vector database
             if 'vectorstore' not in st.session_state:
                 st.session_state['vectorstore'] = Chroma.from_documents(documents=splits, embedding=gemini_embeddings,
-                                                     persist_directory=CHROMA_DB_DIR)
+                                                                         persist_directory=CHROMA_DB_DIR)
                 st.write("Initialized new Chroma DB.")
             else:
                 st.session_state['vectorstore'].add_documents(documents=splits)
@@ -221,66 +228,51 @@ with st.container():
 
             retriever = st.session_state['vectorstore'].as_retriever()
 
-            # Create RAG chain
             system_prompt = (
-                "You are an assistant for question-answering tasks. "
-                "Use the following pieces of retrieved context to answer the question "
-                "If you don't know the answer, say that you don't know."
-                "Use three sentences maximum and keep the answer concise."
-                "\n\n"
-                "{context}"
+                "You are an assistant for question-answering tasks. Use the retrieved context."
+                "If you don't know the answer, say that you don't. Keep answers concise.\n\n{context}"
             )
-            chat_prompt = ChatPromptTemplate.from_messages(
-                [
-                    ("system", system_prompt),
-                    ("human", "{input}"),
-                ]
-            )
-            question_answering_chain = create_stuff_documents_chain(model, chat_prompt)
-            rag_chain = create_retrieval_chain(retriever, question_answering_chain)
 
-            # Implement history-aware retriever
+            chat_prompt = ChatPromptTemplate.from_messages([
+                ("system", system_prompt),
+                ("human", "{input}"),
+            ])
+            qa_chain = create_stuff_documents_chain(model, chat_prompt)
+            rag_chain = create_retrieval_chain(retriever, qa_chain)
+
             retriever_prompt = (
-                "Given a chat history and the latest user question which might reference context in the chat history,"
-                "formulate a standalone question which can be understood without the chat history."
-                "Do NOT answer the question, just reformulate it if needed and otherwise return it as is."
+                "Given chat history and latest user question, rephrase it standalone."
             )
-            contextualize_q_prompt = ChatPromptTemplate.from_messages(
-                [
-                    ("system", retriever_prompt),
-                    MessagesPlaceholder(variable_name="chat_history"),
-                    ("human", "{input}"),
-                ]
-            )
-            history_aware_retriever = create_history_aware_retriever(model, retriever,
-                                                                       contextualize_q_prompt)
 
-            # Create conversational RAG chain
-            qa_prompt = ChatPromptTemplate.from_messages(
-                [
-                    ("system", system_prompt),
-                    MessagesPlaceholder("chat_history"),
-                    ("human", "{input}"),
-                ]
-            )
+            contextualize_q_prompt = ChatPromptTemplate.from_messages([
+                ("system", retriever_prompt),
+                MessagesPlaceholder(variable_name="chat_history"),
+                ("human", "{input}"),
+            ])
+
+            history_aware_retriever = create_history_aware_retriever(model, retriever, contextualize_q_prompt)
+
+            qa_prompt = ChatPromptTemplate.from_messages([
+                ("system", system_prompt),
+                MessagesPlaceholder("chat_history"),
+                ("human", "{input}"),
+            ])
+
             question_answer_chain = create_stuff_documents_chain(model, qa_prompt)
             rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
-
-            st.session_state["rag_chain"] = rag_chain  # Store rag_chain in session state
+            st.session_state["rag_chain"] = rag_chain
 
         except Exception as e:
-            st.error(f"Error loading or processing the URL/file: {e}")
+            st.error(f"Error loading data: {e}")
 
-    # Asking question section
     user_question = st.text_input("Enter your question:", key="user_question")
     ask_button = st.button("Ask Question")
 
     if ask_button:
         if "rag_chain" in st.session_state:
-            rag_chain = st.session_state["rag_chain"]
-            session_id = "default_session"  # You can implement more complex session management
+            session_id = "default_session"
             conversational_rag_chain = RunnableWithMessageHistory(
-                rag_chain,
+                st.session_state["rag_chain"],
                 get_session_history,
                 input_messages_key="input",
                 history_messages_key="chat_history",
@@ -292,18 +284,14 @@ with st.container():
             )
             answer = response["answer"]
 
-            # Display the answer
             st.write("Answer:", answer)
 
-            # Display chat history
             st.markdown("<div class='chat-history'>", unsafe_allow_html=True)
             for message in st.session_state["store"].get(session_id, ChatMessageHistory()).messages:
-                if isinstance(message, AIMessage):
-                    prefix = "AI"
-                else:
-                    prefix = "User"
+                prefix = "AI" if isinstance(message, AIMessage) else "User"
                 st.write(f"{prefix}: {message.content}")
             st.markdown("</div>", unsafe_allow_html=True)
         else:
             st.warning("Please load data first before asking questions.")
+
     st.markdown("</div>", unsafe_allow_html=True)
