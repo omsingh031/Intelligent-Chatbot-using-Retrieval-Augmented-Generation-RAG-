@@ -9,5 +9,6 @@ python-dotenv
 streamlit-community-navigation-bar
 protobuf==3.20.3
 setuptools
-sqlite3>= 3.35.0.
+pysqlite3-binary
+
 
