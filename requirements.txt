@@ -7,3 +7,4 @@ langchain_google_genai
 streamlit
 python-dotenv
 streamlit-community-navigation-bar
+protobuf==3.20.3
