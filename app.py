@@ -24,7 +24,6 @@ warnings.filterwarnings('ignore')
 load_dotenv()
 
 # API environment
-LANGCHAIN_TRACING_V2="true"
 os.environ["LANGCHAIN_TRACING_V2"] = os.getenv("LANGCHAIN_TRACING_V2")
 os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
 os.environ["LANGCHAIN_ENDPOINT"] = os.getenv("LANGCHAIN_ENDPOINT")
@@ -36,6 +35,11 @@ if "store" not in st.session_state:
     st.session_state["store"] = {}
 
 CHROMA_DB_DIR = "chroma_db"
+from langchain.vectorstores import Chroma
+
+def create_vectorstore_from_docs(docs, embedding):
+    return Chroma.from_documents(docs, embedding_function=embedding)
+
 
 try:
     gemini_embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
