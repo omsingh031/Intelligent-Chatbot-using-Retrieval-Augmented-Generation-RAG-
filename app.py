@@ -36,6 +36,9 @@ if "store" not in st.session_state:
 
 CHROMA_DB_DIR = "chroma_db"
 from langchain.vectorstores import Chroma
+# For Streamlit Cloud deployments
+CHROMA_DB_DIR = "/tmp/chroma_db"  # Temporary directory with write access
+
 
 def create_vectorstore_from_docs(docs, embedding):
     return Chroma.from_documents(docs, embedding_function=embedding)
