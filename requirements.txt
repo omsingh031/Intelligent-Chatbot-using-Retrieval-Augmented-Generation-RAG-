@@ -8,4 +8,4 @@ streamlit
 python-dotenv
 streamlit-community-navigation-bar
 protobuf==3.20.3
-setuptools>=69.0.0
+setuptools
