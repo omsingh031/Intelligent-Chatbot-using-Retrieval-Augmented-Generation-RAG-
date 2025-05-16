@@ -6,4 +6,4 @@ beautifulsoup4
 langchain_google_genai
 streamlit
 python-dotenv
-
+streamlit-community-navigation-bar
