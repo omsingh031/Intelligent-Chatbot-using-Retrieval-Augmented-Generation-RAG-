@@ -4,7 +4,7 @@ import time
 import streamlit as st
 from dotenv import load_dotenv
 from streamlit.runtime.scriptrunner import get_script_run_ctx
-from streamlit_community_navigation_bar import st_navbar
+from streamlit_navigation_bar import st_navbar
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
