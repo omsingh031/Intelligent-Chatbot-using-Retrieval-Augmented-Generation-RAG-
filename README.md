@@ -1,6 +1,6 @@
-# 🤖 Intelligent-Chatbot-using-Retrieval-Augmented-Generation-RAG
+# 🤖 Ragobot — RAG Research Assistant
 
-Harness the power of **AI + Retrieval** to get precise, document-specific answers-whether you're researching, studying, or building intelligent systems.
+Harness the power of **AI + Retrieval** to get precise, document-specific answers — whether you're researching, studying, or building intelligent systems.
 
 ![RAG Homepage](images/Homepage.png) 
 
@@ -8,48 +8,60 @@ Harness the power of **AI + Retrieval** to get precise, document-specific answer
 
 ## 📌 What is This?
 
-The **RAG Chatbot** is an intelligent assistant that combines advanced language models with retrieval-augmented generation (RAG) and conversational memory. It can answer your questions based on:
-
-- 📄 **Uploaded documents** (PDF, TXT)
-- 🌐 **Webpage URLs**
-
-It remembers your previous questions, so you get context-aware, human-like responses.
+**Ragobot** is a Retrieval-Augmented Generation (RAG) system that lets you interrogate long academic PDFs (100+ pages) with a conversational AI, while keeping your data completely private and session-isolated. It remembers your previous questions to deliver context-aware, human-like responses.
 
 ---
 
 ## 🚀 Features
 
 - **Conversational Memory:** Remembers your chat history for context-rich answers.
-- **Multi-source Retrieval:** Ask questions about uploaded files or scraped web pages.
-- **Modern UI:** Built with Streamlit, featuring a sleek navbar, sidebar, and sticky footer.
+- **Advanced Retrieval:** Uses FAISS and Nomic open-source embeddings for lightning-fast semantic search.
+- **Blazing Fast AI:** Powered by Groq (`llama-3.3-70b-versatile`) for near-instantaneous text generation.
+- **Source Citations:** Every AI answer includes expandable citations linking back to the exact source file and page number.
+- **Absolute Privacy:** Your PDFs are never written to disk — all processing is done entirely in RAM and vanishes automatically when you close the tab.
+- **Modern UI:** Built with Streamlit, featuring a sleek custom navigation bar, sticky footer, and responsive metric cards.
 
 ---
 
-## 🛠️ How to Use
+## 🛠️ Technical Architecture
+
+| Component | Technology |
+|-----------|-----------|
+| **LLM** | Groq `llama-3.3-70b-versatile` |
+| **Embeddings** | `nomic-ai/nomic-embed-text-v1.5` (8K context) |
+| **Vector Store** | FAISS (in-memory, CPU) |
+| **Chunking** | LangChain `RecursiveCharacterTextSplitter` |
+| **PDF Parsing** | PyMuPDF (in-RAM, no disk I/O) |
+| **UI** | Streamlit + Custom CSS |
+
+---
+
+## 💻 How to Use Locally
 
 1. **Clone the Repo & Install Requirements**
-    ```
+    ```bash
     git clone https://github.com/omsingh031/Intelligent-Chatbot-using-Retrieval-Augmented-Generation-RAG-.git
-    cd your-repo-name
+    cd Intelligent-Chatbot-using-Retrieval-Augmented-Generation-RAG-
     pip install -r requirements.txt
     ```
 
 2. **Set Up Environment Variables**  
-   Create a `.env` file in the root directory with your API key:
+   Create a `.env` file in the root directory and add your Groq API key:
+    ```env
+    GROQ_API_KEY="gsk_your_groq_api_key_here"
     ```
-    GROQ_API_KEY="your_groq_api_key_here"
-    ```
+   *(You can get a free API key at [console.groq.com](https://console.groq.com))*
 
 3. **Run the App**
-    ```
+    ```bash
     streamlit run app.py
     ```
 
 4. **Interact!**
-    - Upload a PDF or TXT file, or enter a webpage URL.
-    - Click **Load File** or **Load URL**.
-    - Ask your question in the chat input.
-    - View your conversation history and explore other sections via the navigation bar.
+    - Click **Browse Files** in the sidebar and select one or more PDFs.
+    - Click **⚡ Index Documents**.
+    - Use the file filter to narrow your search scope if desired.
+    - Ask a question in the chat bar and view the AI response with citations!
 
 ---
 
@@ -64,25 +76,31 @@ It remembers your previous questions, so you get context-aware, human-like respo
 
 ## 👥 About Us
 
-Welcome to our RAG Chatbot-an intelligent assistant that bridges human curiosity and machine knowledge through cutting-edge AI.
+Welcome to our RAG Chatbot — an intelligent assistant that bridges human curiosity and machine knowledge through cutting-edge AI.
 
 We are a passionate team of developers, designers, and researchers dedicated to making information retrieval smarter, faster, and more contextual.  
 Our mission: **To make AI more human-centric by combining advanced language models with intuitive user interfaces and real-world usability.**
 
 ---
 
-## 🌍 Why This Matters
+## 💼 Team
 
-In a world overflowing with unstructured information, our chatbot serves as a personal researcher, quickly digging through content and providing meaningful answers-with memory, clarity, and reliability.
+- 👨‍💻 **Om Kumar Singh** – Lead Developer  
+- 🧑‍💻 Ashi Jain  
+- 🧑‍💻 Vansh Jain  
+- 🧑‍💻 Roshmik Agrawal  
+- 🧑‍💻 Aadish Chaturvedi  
+- 🧑‍💻 Shambhavi Dubey
 
 ---
 
 ## 🛣️ Future Enhancements
 
-- Add support for more file types
-- Improve long-term context handling
-- Integrate authentication and user profiles
-- Export chat logs and document references
+- **Web URL Ingestion:** Scrape and index web articles alongside PDFs
+- **Multi-modal Support:** Parse tables, charts, and images from PDFs
+- **Authentication:** User accounts with persistent named sessions
+- **Export Chat Logs:** Download full conversation + citations as PDF/Markdown
+- **Hybrid Search:** Combine FAISS dense search with BM25 sparse search for higher recall
 
 ---
 
