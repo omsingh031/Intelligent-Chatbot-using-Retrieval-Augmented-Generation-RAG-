@@ -35,12 +35,9 @@ It remembers your previous questions, so you get context-aware, human-like respo
     ```
 
 2. **Set Up Environment Variables**  
-   Create a `.env` file in the root directory with your API keys and config:
+   Create a `.env` file in the root directory with your API key:
     ```
-    LANGCHAIN_TRACING_V2=...
-    LANGCHAIN_API_KEY=...
-    LANGCHAIN_ENDPOINT=...
-    LANGCHAIN_PROJECT=...
+    GROQ_API_KEY="your_groq_api_key_here"
     ```
 
 3. **Run the App**
@@ -71,17 +68,6 @@ Welcome to our RAG Chatbot-an intelligent assistant that bridges human curiosity
 
 We are a passionate team of developers, designers, and researchers dedicated to making information retrieval smarter, faster, and more contextual.  
 Our mission: **To make AI more human-centric by combining advanced language models with intuitive user interfaces and real-world usability.**
-
----
-
-## 💼 Team
-
-- 👨‍💻 **Om Kumar Singh** – Lead Developer  
-- 🧑‍💻 Ashi Jain  
-- 🧑‍💻 Vansh Jain  
-- 🧑‍💻 Roshmik Agrawal  
-- 🧑‍💻 Aadish Chaturvedi  
-- 🧑‍💻 Shambhavi Dubey
 
 ---
 
@@ -116,6 +102,4 @@ This project is licensed under the MIT License. See [LICENSE](LICENSE) for detai
 
 ---
 
-> _Made with ❤️ by Om Kumar Singh and Team_
-
-# 🤖 Intelligent-Chatbot-using-Retrieval-Augmented-Generation-RAG
+> _Made with ❤️ by Om Kumar Singh_
