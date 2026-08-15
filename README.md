@@ -2,7 +2,7 @@
 
 Harness the power of **AI + Retrieval** to get precise, document-specific answers — whether you're researching, studying, or building intelligent systems.
 
-![RAG Homepage](images/Homepage.png) 
+![RAG Homepage](images/Homepage.jpg) 
 
 ---
 
@@ -68,9 +68,9 @@ Harness the power of **AI + Retrieval** to get precise, document-specific answer
 ## 🖥️ Screenshots
 
 <!-- Add your own screenshots here -->
-![User Manual](images/User_Manual.png)
-![Working of App](images/WORKING1.png)
-![Chat Example](images/WORKING2.png)
+![User Manual](images/User_Manual.jpg)
+![Working of App](images/WORKING1.jpg)
+![Chat Example](images/WORKING2.jpg)
 
 ---
 
@@ -80,17 +80,6 @@ Welcome to our RAG Chatbot — an intelligent assistant that bridges human curio
 
 We are a passionate team of developers, designers, and researchers dedicated to making information retrieval smarter, faster, and more contextual.  
 Our mission: **To make AI more human-centric by combining advanced language models with intuitive user interfaces and real-world usability.**
-
----
-
-## 💼 Team
-
-- 👨‍💻 **Om Kumar Singh** – Lead Developer  
-- 🧑‍💻 Ashi Jain  
-- 🧑‍💻 Vansh Jain  
-- 🧑‍💻 Roshmik Agrawal  
-- 🧑‍💻 Aadish Chaturvedi  
-- 🧑‍💻 Shambhavi Dubey
 
 ---
 
