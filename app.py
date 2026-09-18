@@ -453,12 +453,12 @@ if selected_page == "Home":
 
                 # ── Groq call with retry ──────────────────────────────
                 with st.chat_message("assistant"):
-                    with st.spinner("Thinking via Groq llama-3.3-70b-versatile…"):
+                    with st.spinner("Thinking via Groq openai/gpt-oss-20b…"):
                         ai_response = None
                         for attempt in range(2):
                             try:
                                 completion = groq_client.chat.completions.create(
-                                    model="llama-3.3-70b-versatile",
+                                    model="openai/gpt-oss-20b",
                                     messages=groq_messages,
                                     temperature=0.1,
                                     max_tokens=1024,
@@ -557,7 +557,7 @@ research documents.
 
 | Component | Technology |
 |-----------|-----------|
-| **LLM** | Groq `llama-3.3-70b-versatile` |
+| **LLM** | Groq `openai/gpt-oss-20b` |
 | **Embeddings** | `nomic-ai/nomic-embed-text-v1.5` (8K context, open-source) |
 | **Vector Store** | FAISS (in-memory, CPU) |
 | **Chunking** | LangChain `RecursiveCharacterTextSplitter` |

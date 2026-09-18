@@ -21,7 +21,7 @@ def rewrite_query(
     like "What about the next section?" or "Can you elaborate?" are
     meaningless to a vector search without context.
 
-    Uses llama-3.1-8b-instant (fast, cheap) for this lightweight rewrite task.
+    Uses openai/gpt-oss-20b (fast, cheap, reliable) for this lightweight rewrite task.
     Falls back to the original query on any error so the pipeline is never broken.
 
     Args:
@@ -55,7 +55,7 @@ def rewrite_query(
 
     try:
         response = groq_client.chat.completions.create(
-            model="llama-3.1-8b-instant",   # Fast, cheap model for this lightweight task
+            model="openai/gpt-oss-20b",   # Fast, cheap, reliable model for this lightweight task
             messages=[{"role": "user", "content": rewrite_prompt}],
             temperature=0.0,
             max_tokens=120,
