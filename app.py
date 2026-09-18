@@ -201,12 +201,11 @@ selected_page = st_navbar([
 @st.cache_resource(show_spinner="Loading embedding model (one-time setup)…")
 def load_shared_resources():
     """
-    Initialises the nomic-embed-text-v1.5 embedding model and the global
+    Initialises the BAAI/bge-base-en-v1.5 embedding model and the global
     rate-limit tracker exactly once, shared across all browser sessions.
     """
     embeddings = HuggingFaceEmbeddings(
-        model_name="nomic-ai/nomic-embed-text-v1.5",
-        model_kwargs={"trust_remote_code": True},
+        model_name="BAAI/bge-base-en-v1.5",
     )
     global_rate_tracker: dict = {}
     return embeddings, global_rate_tracker
@@ -558,7 +557,7 @@ research documents.
 | Component | Technology |
 |-----------|-----------|
 | **LLM** | Groq `openai/gpt-oss-20b` |
-| **Embeddings** | `nomic-ai/nomic-embed-text-v1.5` (8K context, open-source) |
+| **Embeddings** | `BAAI/bge-base-en-v1.5` (512 token, open-source, no custom code) |
 | **Vector Store** | FAISS (in-memory, CPU) |
 | **Chunking** | LangChain `RecursiveCharacterTextSplitter` |
 | **PDF Parsing** | PyMuPDF (in-RAM, no disk I/O) |
